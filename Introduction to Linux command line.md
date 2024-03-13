@@ -1,3 +1,11 @@
+# Lab 9: Data Quality Control
+
+Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a couple of computer-based tools that are important in the cleanup,
+manipulation, and analysis of amplicon sequence data. These computer lab
+sessions are meant to provide you with some experience in using “command line” software to investigate biological questions using sequence data. We realize that
+bioinformatics will be new to many of you, and previous experience is not
+required to complete any exercises.
+
 ### Introduction to Linux command line
 
 The Linux command line interface (CLI) is a powerful tool for interacting with your computer's operating system. Unlike graphical user interfaces (GUIs), which rely on icons and windows, the command line allows users to execute commands by typing text-based instructions.
@@ -18,7 +26,7 @@ To move between directories in Linux, you use the 'cd' command followed by the d
   cd /home/user/Documents
   ```
   
-  This command navigates to the "Documents" directory within the "user" directory, which is located in the "/home" directory.
+  This command navigates to the "Documents" directory within the "user" directory, which is located in the `/home` directory.
 
 - **Relative Path:** Specifies the location of a directory relative to the current directory. For example:
   
@@ -26,7 +34,7 @@ To move between directories in Linux, you use the 'cd' command followed by the d
   cd Documents
   ```
   
-  This command navigates to the "Documents" directory within the current directory. If you're already in the "/home/user" directory, this command achieves the same result as the absolute path example above.
+  This command navigates to the "Documents" directory within the current directory. If you're already in the `/home/user` directory, this command achieves the same result as the absolute path example above.
 
 - To move up one directory (to the parent directory):
   
@@ -51,18 +59,27 @@ While Linux, Windows, and macOS all have hierarchical file systems, there are di
 #### Linux:
 
 - Root directory: "/"
+
 - Directory separator: "/"
+
 - Case-sensitive file names: "file.txt" and "File.txt" are considered different files
+
 - #### Windows:
 
 - Root directory: "C:" (on most systems)
+
 - Directory separator: "\"
+
 - Case-insensitive file names: "file.txt" and "File.txt" are considered the same file
+
 - #### macOS:
 
 - Root directory: "/"
+
 - Directory separator: "/"
+
 - Case-insensitive file names: "file.txt" and "File.txt" are considered the same file
+
 - ### Understanding the Command Prompt
 
 The command prompt in Linux typically displays information such as the username, hostname, current directory, and a special character called the prompt symbol. Here's a breakdown of what each part means:
