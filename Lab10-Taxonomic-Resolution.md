@@ -170,7 +170,9 @@ Do most R1 and R2 sequences overlap?
 
 Are many of the ASVs chimeric?
 
-We can get much more information from the DADA2 output! Run the below code.
+
+
+We can get much more information from the DADA2 output, for instance, the total number of features identified, and how many times each feature was found in each sample.
 
 Note that this is the first appearance of the `metadata` file in our code.
 
@@ -431,6 +433,12 @@ Note: Decide on an image of the bar chart that you would like to eventually incl
 - Consider which taxonomic levels make sense (to you) to report.
 
 - Consider how the data look most presentable, and what metadata category to group them by.
+
+**Dowloading data**
+
+You many want to download the data used to create the barchart to make a nicer figure in another program. To do so, set your barchart to the appropriate taxonomic scale (probably 7) and then click on `csv` in the top left. This will allow you to download a comma delimited text file containing the data used to create this visualization.
+
+
 
 **State of the data:**
 
