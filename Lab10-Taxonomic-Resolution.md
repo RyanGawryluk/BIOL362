@@ -2,13 +2,13 @@
 
 # PRACTICAL SKILLS IN GENOMICS
 
- 
+
 
 ## Laboratory 10: Taxonomic Resolution
 
 Welcome to Lab 10. In today’s lab, we will begin to explore our sequencing data! We will carry out one of the most important first steps in bioinformatic analysis of amplicon sequence data: determining which taxa are present in our samples. Almost all of the steps carried out in this lab will be done using the QIIME2 analysis suite.
 
-### **Introduction to QIIME2**
+#### **Introduction to QIIME2**
 
 Qiime2 (pronounced ‘chime 2’) is a freely-available bioinformatics platform specifically designed for the analysis of NGS-based microbiome experiments ([https://qiime2.org/](https://qiime2.org/)). QIIME2 integrates a number of standalone software packages into a common ‘environment’ that allows us to process raw sequencing data, determine which species are present in a dataset, and carry out many other powerful analyses that give insights into the structure and diversity of microbial communities. We will be operating the command-line version of QIIME2 via Terminal.
 
@@ -34,9 +34,9 @@ conda init bash
 conda activate BIOL362
 ```
 
-**Command 10.2**
 
-**Import amplicon data as Qiime artifact**
+
+#### Import amplicon data as Qiime artifact
 
 Next, we will import the sequence data into qiime2. There are many ways to do this, depending on the type of sequence data you have (single-end, paired end *etc.*).
 
@@ -46,17 +46,21 @@ Recall from class that a manifest file is simply a tab-delimited text file that 
 
 If you’d like to see the manifest file, it can be opened with Excel. Its location is:`/Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/Import/Kombucha_manifest.txt`
 
+**Command 10.2**
+
 ```bash
 qiime tools import --type SampleData[PairedEndSequencesWithQuality] --input-path Import/Kombucha_manifest.txt --output-path Import/V6V8-paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
 ```
 
 The data are now present within a qiime2 ‘artifact’. This file holds data, but it is not something that we can visually inspect.
 
-**Command 10.3**
 
-**Removing primer sequences from reads**
+
+#### **Removing primer sequences from reads**
 
 Still working in `/Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/`, we will now remove primer sequences with CutAdapt, much like we did in the previous lab with the Qiagen dataset.
+
+**Command 10.3**
 
 ```bash
 qiime cutadapt trim-paired --i-demultiplexed-sequences Import/V6V8-paired-end-demux.qza --p-front-f ^ACGCGHNRAACCTTACC --p-front-r ^ACGGGCRGTGWGTRCAA --p-overlap 7 --p-discard-untrimmed --o-trimmed-sequences Import/V6V8_trimmed.qza --verbose
@@ -70,21 +74,23 @@ Additionally, we specified that a primer must be found in **both** of the R1 and
 
 Lastly, it's also very useful to be aware of default parameters of programs, which are also described in the help menus. For instance, Cutadapt defaults to allowing a single mismatch in the primer sequence. Another important default behaviour of Cutadapt is to delete the specified primer sequences, `--action trim`. We do want to use this setting, so I haven't specified it because it's the default; but I have encountered interesting problems when used other settings!
 
-**Command 10.4**
 
-**Generating a visualization of data quality**
+
+#### Generating a visualization of data quality
 
 Using the below command, we can generate a **visualization**. In Qiime, we use visualizations to inspect the output of a command. This particular one summarizes the read counts per sample and generates interactive positional quality plots (similar to FastQC) that let us decide if we need to trim the primer-trimmed reads further at the 5ʹ and 3ʹ ends due to decreased quality scores.
+
+**Command 10.4**
 
 ```bash
 qiime demux summarize --i-data Import/V6V8_trimmed.qza --o-visualization Import/V6V8-paired-end-trimmed.qzv
 ```
 
-**Command 10.5**
-
 **Inspecting the visualization**
 
 To actually see visualizations, we always need to type `qiime tools view` then the file name. This will open up a new window/tab in your web browser.
+
+**Command 10.5**
 
 ```bash
 qiime tools view Import/V6V8-paired-end-trimmed.qzv
@@ -104,11 +110,13 @@ Choosing how to trim the reads can be tricky because we have to take a couple of
 
 Decide if and/or at which position to cut the R1 and R2 reads at the 3ʹ end. This does not have to be the same position for R1 and R2. In the next command, **you will decide** which trimming parameters to use. (Make sure you keep track of any parameters that you use that are different than in the lab manual - just like in the wet lab!)
 
-**Amplicon sequence variant (ASV) resolution**
 
-**Command 10.6**
+
+#### **Amplicon sequence variant (ASV) resolution**
 
 Make a new directory named DADA2_out; this is where output from our dada2 commands will go. The command should be run from within `/Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/` to generate a new folder `/Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/DADA2_out`.
+
+**Command 10.6**
 
 ```bash
 mkdir DADA2_out
@@ -128,30 +136,38 @@ It is important to understand that there are several independent operations bein
 2) Merging paired R1 and R2 reads into a single ASV
 3) Detecting likely chimeric ASVs
 
+
+
 **Note**: you have to add values for the --p-trunc-len-f and --p-trunc-len-r flags yourself; I have used X and Y as placeholders). Inspect the dada2 help menu to make sure that you understand what those flags do. Having chosen inappropriate values will often be evident in the output of `Command 10.9`; for instance, you might find that you have thrown away a large proportion (>60-70%) of your reads.
 
 Also, beware: the “--p-trunc_len” command removes reads shorter than the specified cutoff; if you don’t want to trim at all, set X and Y to “0”.
 
-**Command 10.7**
+
 
 Denoise, dereplicate, merge reads into ASVs using DADA2. 
 
 This step will take a while.
 
+**Command 10.7**
+
 ```bash
 qiime dada2 denoise-paired --i-demultiplexed-seqs Import/V6V8_trimmed.qza --p-trunc-len-f X --p-trunc-len-r Y --verbose --o-representative-sequences DADA2_out/V6V8-rep-seqs-dada2.qza --o-table DADA2_out/V6V8-table-dada2.qza --o-denoising-stats DADA2_out/V6V8-stats-dada2.qza
 ```
 
-**Command 10.8**
+
 Create a visualization of DADA2 stats artifact.
+
+**Command 10.8**
 
 ```bash
 qiime metadata tabulate --m-input-file DADA2_out/V6V8-stats-dada2.qza --o-visualization DADA2_out/V6V8-stats-dada2.qzv
 ```
 
-**Command 10.9**
 
-View the output visualization file
+
+View the output visualization file.
+
+**Command 10.9**
 
 ```bash
 qiime tools view DADA2_out/V6V8-stats-dada2.qzv
@@ -177,29 +193,33 @@ Note that this is the first appearance of the `metadata` file in our code.
 
 
 
-**Command 10.10**
+Make a visualization of the DADA2 table artifact.
 
-Make a visualization of the DADA2 table artifact
+**Command 10.10**
 
 ```bash
 qiime feature-table summarize --i-table DADA2_out/V6V8-table-dada2.qza --m-sample-metadata-file Metadata/Kombucha_metadata.txt --o-visualization DADA2_out/V6V8-table-dada2.qzv
 ```
 
-**Command 10.11**
 
-View the DADA2 output table file
+
+View the DADA2 output table file.
+
+**Command 10.11**
 
 ```bash
 qiime tools view DADA2_out/V6V8-table-dada2.qzv
 ```
 
-The Overview (default) tab shows various statistics about the ASV data.
+The `Overview` (default) tab shows various statistics about the ASV data.
 
 - How many distinct ASVs (number of features) are there in total?
 
 - How many read pairs (total frequency) are there across samples?
 
 - What are the mean and maximum frequencies per feature?
+
+
 
 Look at the `Feature Detail` tab.
 
@@ -217,21 +237,21 @@ Look at the `Feature Detail` tab.
 
 
 
-**Command 10.12**
-
 We have not actually seen any of the ASV sequences yet. Do they look how we expect (i.e., like bona fide bacterial V6V8 amplicon sequences)?
 
-Run the below code to find out.
+Make a visualization of DADA2 sequences artifact.
 
-Make a visualization of DADA2 sequences artifact
+**Command 10.12**
 
 ```bash
 qiime feature-table tabulate-seqs --i-data DADA2_out/V6V8-rep-seqs-dada2.qza --o-visualization DADA2_out/V6V8-rep-seqs-dada2.qzv
 ```
 
-**Command 10.13**
 
-View the output file containing ASV sequences
+
+View the output file containing ASV sequences.
+
+**Command 10.13**
 
 ```bash
 qiime tools view DADA2_out/V6V8-rep-seqs-dada2.qzv
@@ -253,7 +273,7 @@ For each of the top five ASV sequences (listed from highest to lowest frequency)
 
 
 
-**Filtering the dataset**
+#### **Filtering the dataset**
 
 It’s likely that rare and sparsely distributed features/ASVs exist within the dataset. Rare components of the microbiome may represent contaminants, minor variants of true ASVs, or ASVs generated from errors in PCR/sequencing/error-correction.
 
@@ -263,27 +283,31 @@ Sometimes it can also be useful to apply **phylogenetic filters** to remove read
 
 To begin the process of filtering, we will generate two files below. One is a file (BIOM file) that reports how many times each ASV/feature was found in each sample. This will help us understand the extent of contamination in our negative control. We will also assign taxonomy to each ASV to deduce if what phylogenetic groups our contaminants come from.
 
+
+
 We will create a BIOM feature table file of the dataset.
 
-**Command 10.14**
-
 Make a new folder called BIOM.
+
+**Command 10.14**
 
 ```bash
 mkdir BIOM
 ```
 
-**Command 10.15**
-
 Export table for making BIOM ASV count file.
+
+**Command 10.15**
 
 ```bash
 qiime tools export --input-path DADA2_out/V6V8-table-dada2.qza --output-path BIOM
 ```
 
-**Command 10.16**
+
 
 Export the BIOM ASV count file as a tab-delimited text file, that can be viewed in Excel.
+
+**Command 10.16**
 
 ```bash
 biom convert -i BIOM/feature-table.biom -o BIOM/feature-table.tsv --to-tsv
@@ -295,7 +319,9 @@ Which are likely contaminant ASVs?
 
 Are those ASVs also present in our actual samples?
 
-**Assign taxonomy**
+
+
+#### **Assign taxonomy**
 
 It is very useful to assign a taxonomic identity to all features in a high throughput way.
 
@@ -311,17 +337,17 @@ Next, we will classify our dataset using a Bayesian classifier approach with the
 
 
 
-**Command 10.17**
-
 Classify the table.
+
+**Command 10.17**
 
 ```bash
 qiime feature-classifier classify-sklearn --i-classifier Classify/silva-138-99-nb-classifier.qza --i-reads DADA2_out/V6V8-rep-seqs-dada2.qza --o-classification Classify/V6V8_taxonomy.qza
 ```
 
-**Command 10.18**
-
 Tabulate blast classification of ASVs.
+
+**Command 10.18**
 
 ```bash
 qiime metadata tabulate --m-input-file Classify/V6V8_taxonomy.qza --o-visualization Classify/V6V8_taxonomy.qzv
@@ -333,9 +359,9 @@ The classifications are presented as: Kingdom, Phylum, Class, Order, Family, Gen
 
 Notice that few taxa can be classified to a species level.
 
-**Command 10.19**
-
 View output classification file.
+
+**Command 10.19**
 
 ```bash
 qiime tools view Classify/V6V8_taxonomy.qzv
@@ -343,23 +369,25 @@ qiime tools view Classify/V6V8_taxonomy.qzv
 
 Now compare your taxonomy visualization and the BIOM file in Excel. Is there a particular taxonomic group that is found commonly in the negative control? If so, what is it?
 
-Open up a new Excel spreadsheet and copy the ASV ID (long, strange alphanumeric string) of your candidate contaminants into the spreadsheet, with one ID per row. Note that those with a frequency less than 100 and found in fewer than 3 samples will be deleted anyways by our contingency filter (below). When complete, save this file as a tab-delimited text file (not a .xlsx file) called `to_exclude.txt` within the `Classify` folder. We will tell qiime to delete these features/ASVs in the next command.
+Create a new Excel spreadsheet. In the first cell, copy and paste "feature-id" and then copy the ASV IDs (long alphanumeric string) of your candidate contaminants into the spreadsheet, with one ID per row. When complete, save this file as a tab-delimited text file (not a .xlsx file) called `to_exclude.txt` within the `Classify` folder. We will tell qiime to delete the features/ASVs in `to_exclude.txt` in the next command.
 
-And generally inspect the abundance of ASVs in all of your samples. If you scroll down a bit, you will notice that many ASVs in our samples (aside from the negative control) are found in very low frequency, and may only be in a couple of samples. These ASVs are unlikely to be having a large effect on community structure. Perhaps we should filter some out, based on total frequency across datasets and the number of samples they are found in.
+Also, inspect the abundance of ASVs in all of your samples. If you scroll down a bit, you will notice that many ASVs in our samples (besides the negative control) are found in very low frequency, and may only be in a couple of samples. These ASVs are unlikely to be having a large effect on community structure in kombucha. Perhaps we should filter some out, based on their total frequency across datasets and the number of samples that they are found in.
 
 As a contingency filter, I have suggested to remove any ASV present in 3 or fewer samples, with a total frequency of less than 100. But you can choose your own thresholds, too, just be sure to write them down!
 
-**Command 10.20**
 
-Filter, and write a new filtered table artifact
+
+Filter, and write a new filtered table artifact.
+
+**Command 10.20**
 
 ```bash
 qiime feature-table filter-features --i-table DADA2_out/V6V8-table-dada2.qza --m-metadata-file Classify/to_exclude.txt --p-exclude-ids --p-min-samples 3 --p-min-frequency 100 --o-filtered-table DADA2_out/V6V8-table-filtered-dada2.qza
 ```
 
-**Command 10.21**
-
 Output a new Feature Table (sequence) artifact. This updates the sequence dataset so that it no longer contains the filtered sequences; we will use this in downstream analyses.
+
+**Command 10.21**
 
 ```bash
 qiime feature-table filter-seqs --i-data DADA2_out/V6V8-rep-seqs-dada2.qza --i-table DADA2_out/V6V8-table-filtered-dada2.qza --o-filtered-data DADA2_out/V6V8-rep-seqs-filtered-dada2.qza
@@ -397,19 +425,19 @@ Keep in mind that this chart shows the **relative abundance** of different taxon
 
 
 
-Execute the below command.
+Create a taxonomic bar plot visualization of V6V8 ASVs based on filtered classification.
 
 **Command 10.24**
-
-Create a taxonomic bar plot visualization of V6V8 ASVs based on filtered classification.
 
 ```bash
 qiime taxa barplot --i-table DADA2_out/V6V8-table-filtered-dada2.qza --i-taxonomy Classify/V6V8_taxonomy.qza --m-metadata-file Metadata/Kombucha_metadata.txt --o-visualization Classify/V6V8_filtered_taxon_barplot.qzv
 ```
 
-**Command 10.23**
+
 
 View the interactive bar chart visualization
+
+**Command 10.25**
 
 ```bash
 qiime tools view Classify/V6V8_filtered_taxon_barplot.qzv
