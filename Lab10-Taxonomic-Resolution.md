@@ -8,7 +8,7 @@ Welcome to Lab 10. In today’s lab, we will begin to explore our sequencing dat
 
 #### **Introduction to QIIME2**
 
-Qiime2 (pronounced ‘chime 2’) is a freely-available bioinformatics platform specifically designed for the analysis of NGS-based microbiome experiments ([https://qiime2.org/](https://qiime2.org/)). QIIME2 integrates a number of standalone software packages into a common ‘environment’ that allows us to process raw sequencing data, determine which species are present in a dataset, and carry out many other powerful analyses that give insights into the structure and diversity of microbial communities. We will be operating the command-line version of QIIME2 via Terminal.
+Qiime2 (pronounced ‘chime 2’) is a freely available bioinformatics platform specifically designed for the analysis of NGS-based microbiome experiments ([https://qiime2.org/](https://qiime2.org/)). QIIME2 integrates several standalone software packages into a common ‘environment’ that allows us to process raw sequencing data, determine which species are present in a dataset, and carry out many other powerful analyses that give insights into the structure and diversity of microbial communities. We will be operating the command-line version of QIIME2 via Terminal.
 
 This lab is set up so that you can run all of your commands from one directory - this excludes looking at files in *e.g*., Excel. If you get lost, simply go back to this directory, replacing `NetlinkID` with your own:
 
@@ -169,8 +169,6 @@ Are we losing a lot of sequences because they are of low-quality?
 Do most R1 and R2 sequences overlap?
 
 Are many of the ASVs chimeric?
-
-
 
 We can get much more information from the DADA2 output, for instance, the total number of features identified, and how many times each feature was found in each sample.
 
@@ -437,8 +435,6 @@ Note: Decide on an image of the bar chart that you would like to eventually incl
 **Dowloading data**
 
 You many want to download the data used to create the barchart to make a nicer figure in another program. To do so, set your barchart to the appropriate taxonomic scale (probably 7) and then click on `csv` in the top left. This will allow you to download a comma delimited text file containing the data used to create this visualization.
-
-
 
 **State of the data:**
 
