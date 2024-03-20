@@ -10,9 +10,7 @@ Welcome to Lab 10. In today’s lab, we will begin to explore our sequencing dat
 
 Qiime2 (pronounced ‘chime 2’) is a freely-available bioinformatics platform specifically designed for the analysis of NGS-based microbiome experiments ([https://qiime2.org/](https://qiime2.org/)). QIIME2 integrates a number of standalone software packages into a common ‘environment’ that allows us to process raw sequencing data, determine which species are present in a dataset, and carry out many other powerful analyses that give insights into the structure and diversity of microbial communities. We will be operating the command-line version of QIIME2 via Terminal.
 
-This lab is set up so that you can run all of your commands from one directory - this excludes looking at files in *e.g*., Excel. If you get lost, simply go back to this directory, replacing `NetlinkID` with your :
-
-
+This lab is set up so that you can run all of your commands from one directory - this excludes looking at files in *e.g*., Excel. If you get lost, simply go back to this directory, replacing `NetlinkID` with your own:
 
 ```bash
 cd /Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/
