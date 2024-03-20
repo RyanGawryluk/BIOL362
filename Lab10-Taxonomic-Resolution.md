@@ -208,7 +208,7 @@ Look at the `Feature Detail` tab.
 
 - ‘Frequency’ relates to how often each feature (read pair) is found across the experiment.
 
-- On the right we see the ‘# of Samples Observed In’. This indicates how many samples an ASV was found in (out of 18 samples, including our negative control ... which actually wasn't really negative!)
+- On the right we see the ‘# of Samples Observed In’. This indicates how many samples an ASV was found in (out of 18 samples, including our negative control ... which wasn't really negative!)
 
 - Scroll through this page; look at how widely the frequencies vary. Are all features found in all samples?
 
@@ -254,7 +254,7 @@ It’s likely that rare and sparsely distributed features/ASVs exist within the 
 
 These features can be removed from feature tables via **contingency filtering**, for instance, requiring that features are observed at least X times in total, in a minimum of Y different samples. This can help speed up later commands and possibly avoid making conclusions about irrelevant, sometimes non-existent taxa, but there is also some risk of losing interesting data.
 
-Sometimes it can also be useful to apply **phylogenetic filters** to remove reads from endosymbiotic organelles, like mitochondria and chloroplasts, whose 'bacterial' 16S rRNA genes can be amplified by universal bacterial primers. Or, if contaminants are identified in our **negative control**, those ASVs can be removed as well.
+Sometimes it can also be useful to apply **phylogenetic filters** to remove reads from endosymbiotic organelles, like mitochondria and chloroplasts, who's 'bacterial' 16S rRNA genes can be amplified by universal bacterial primers. Or, if contaminants are identified in our **negative control**, those ASVs can be removed as well.
 
 To begin the process of filtering, we will generate two files below. One is a file (BIOM file) that reports how many times each ASV/feature was found in each sample. This will help us understand the extent of contamination in our negative control. We will also assign taxonomy to each ASV to deduce which phylogenetic groups our contaminants come from.
 
@@ -400,7 +400,7 @@ View the interactive bar chart visualization
 qiime tools view Classify/V6V8_filtered_taxon_barplot.qzv
 ```
 
-The bar chart can be displayed in many different ways.
+The bar chart can be displayed in many ways.
 
 **Taxonomic Level**
 
