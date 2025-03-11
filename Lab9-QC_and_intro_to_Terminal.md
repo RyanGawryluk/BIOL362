@@ -4,7 +4,13 @@
 
 ## Lab 9: Data Quality Control
 
-Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a couple of computer-based tools that are important in the cleanup, manipulation, and analysis of amplicon sequence data. These computer lab sessions are meant to provide you with some experience in using "command line" software to investigate biological questions using sequence data. We realize that bioinformatics will be new to many of you, and previous experience is not required to complete any exercises.
+Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a few computer-based tools that are important in the cleanup, manipulation, and analysis of amplicon sequence data. These computer lab sessions are meant to provide you with some experience in using "command line" software to investigate biological questions using sequence data. We realize that bioinformatics will be new to many of you, and previous experience is not required to complete any exercises.
+
+You may wish to follow the lab manual from [GitHub - RyanGawryluk/BIOL362: A repository for BIOL362, Practical Skills in Genomics](https://github.com/RyanGawryluk/BIOL362)
+
+The actual file is called "Lab9-QC_and_intro_to_Terminal.md". Using this will make it easier to copy and paste commands into Terminal. There aren't a lot of commands this week, but it will be more useful once we have more commands to run.
+
+We will have copies of each bioinformatic lab manual in the same format each week.
 
 ## Laboratory 9: Exploring data
 
@@ -14,32 +20,28 @@ This lab is divided into 2 parts with the first being an investigation of sequen
 
 **Note that in this today's lab, we are only introducing the 'command line' and some bioinformatic tools and will not be focusing on sequence data that we generated. This section on basic directory structure and commands may be very familiar to students with previous bioinformatics experience and can be skipped if you feel that it is familiar.**
 
-**We will be exploring a 'toy' dataset, made available by Qiagen, that contains multiple hypervariable regions within one dataset. The only data directly related to our project that we will inspect today are the results of FastQC.**
+**We will be exploring a 'toy' dataset, made available by Qiagen, that contains multiple hypervariable regions within one dataset. No data directly related to our project will be inspected today.**
 
 ## Laboratory Exercise 9.1: Dataset quality metrics
 
-It is valuable to have bioinformatic tools that allow you to inspect numerous sequence quality metrics in one run. Among the most popular programs is FastQC (<https://www.bioinformatics.babraham.ac.uk/projects/fastqc/>).
+It is valuable to have bioinformatic tools that allow you to inspect numerous sequence quality metrics in one run. Among the most popular programs is FastQC ([Babraham Bioinformatics - FastQC A Quality Control tool for High Throughput Sequence Data](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)).
 
 FastQC outputs basic quality information about fastq read sets, and provides additional information about overrepresented sequences, and retained adapter sequences. FastQC analyses, or those from similar programs, are important not only for microbiome-type analyses, but for virtually any NGS approach, including RNA-seq, whole genome analysis *etc*. The interpretation of the output is somewhat different depending on the type of experiment.
 
-Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forward (R1) and reverse (R2) reads from a sample QiaSeq 16S/ITS dataset, provided by Qiagen. The biological source of the sample data is unknown, but that is irrelevant for our purposes today. Each of the variable regions is represented in these datasets. 
+Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forward (R1) and reverse (R2) reads from last year's BIOL36 dataset, the kombucha microbiome. It's not necessary to understand the distinctions between datasets or experimental setup for this exercise.
 
 ## Detailed instructions
 
-Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/labs/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC`
-where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
+Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/labs/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC` where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
 
 First, open the 'KombuchaFastQC' folder that is located within the Lab9 folder. In this folder, you will find FastQC reports in html format that we generated simply by loading the Illumina MiSeq paired-end amplicon data (*i.e*., R1 and R2 compressed fastq datasets) generated at Dalhousie's IMR into FastQC. Had we been allowed to install FastQC, you would have opened the files, and the program would have automatically generated these reports; but the overall experience would not be much different. Each file contains quality control metrics for reads from the forward (R1) and reverse (R2) reads.
 
 Double-click on at least several of the file names in that folder (maybe you want to check all of them out). A new web browser tab/window will open for each read set and at the side you will see 11 panels presenting different aspects of the read quality analysis. Inspect each panel briefly for the R1 and R2 data sets. The results laid out in these panels help identify any problems with a dataset and help a bioinformatician plan the steps required to clean up the data.
 
-Take 10 minutes, and try to interpret the FastQC data using the documentation found at:
-<https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/>
+Take 10 minutes, and try to interpret the FastQC data using the documentation found at: [Index of /projects/fastqc/Help/3 Analysis Modules](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)
 
 Feel free to work on your own, or with a partner. Afterwards, we will
 discuss your ideas as a class.
-
-
 
 **Try to answer**:
 
@@ -50,11 +52,7 @@ discuss your ideas as a class.
    sequencing in comparison with other sequencing methods, like whole
    genome sequencing or RNA-seq?
 
-
-
 We will not be trimming reads based on sequence quality today; we will do that in the next lab. But normally, we would trim low quality bases from sequences after an initial inspection with FastQC and then run FastQC again to visualize how the data profile has changed.
-
-
 
 **Reflection**
 
@@ -70,11 +68,9 @@ However, Terminal is much more powerful than Finder, because it also integrates 
 
 This course will not focus on complex Terminal functions, but it will be useful to know a few basic facts and commands, so that we can move around directories and list their files in Terminal and carry out commands with QIIME2 in future labs.
 
-
-
 **General Directory structure**
 
-In Linux, the file system follows a hierarchical structure, with the root directory (\"/\") at the top. Directories (folders) contain files and other directories, forming a tree-like structure. Users navigate this structure using commands such as \'cd\' (change directory) to move between directories.
+In Linux, the file system follows a hierarchical structure, with the root directory ("/") at the top. Directories (folders) contain files and other directories, forming a tree-like structure. Users navigate this structure using commands such as 'cd' (change directory) to move between directories.
 
 While Linux, Windows, and macOS all have hierarchical file systems, there are differences in their structures and naming conventions. On a Mac using Terminal, we are using a Linux-like environment, but it's not *exactly* the same as Linux (*e.g.*, see below about file naming); however, it functions similarly.
 
@@ -90,7 +86,7 @@ While Linux, Windows, and macOS all have hierarchical file systems, there are di
 
 - Root directory: "C:" (on most systems)
 
-- Directory separator: "\"
+- Directory separator: ""
 
 - Case-insensitive file names: `file.txt` and `File.txt` are considered the same file.
 
@@ -102,11 +98,9 @@ While Linux, Windows, and macOS all have hierarchical file systems, there are di
 
 - Case-insensitive file names: `file.txt` and `File.txt` are considered the same file.
 
-##### 
-
 ##### **Moving Between Directories**
 
-To move between directories in Linux, you use the \'cd\' command followed by the directory you want to navigate to. You can specify directories using either absolute paths or relative paths.
+To move between directories in Linux, you use the 'cd' command followed by the directory you want to navigate to. You can specify directories using either absolute paths or relative paths.
 
 - **Absolute Path:** Specifies the exact location of a directory from the root directory ("/"). For example:
 
@@ -131,8 +125,6 @@ This command moves up one level in the directory hierarchy.
 `cd \~`
 
 This command moves to the home directory of the current user. We typically do not want to be in our home directories; the `/Volumes/labs/BIOL/BIOL362/Students/` directory has more storage space and is not erased after every lab session.
-
-
 
 **Other useful commands and concepts**
 
@@ -192,8 +184,6 @@ This session is meant to give a basic introduction to file formats, and prelimin
 
 Open the 'Terminal' program (ask for help if you need help locating it if needed). Expand the viewing window for Terminal by dragging it, to make it nice and big. Using Terminal, go to the QiagenSampleData directory. To do so, simply paste **Command 9.3.1**, remembering that username = your Netlink ID. This command is simply telling Terminal which directory to go to.
 
-
-
 **Command 9.3.1:**
 
 ```bash
@@ -202,11 +192,7 @@ cd /Volumes/labs/BIOL/BIOL362/Students/username/Lab9/QiagenSampleData/
 
 NOTE: Remember to change '**username**' to your Netlink ID
 
-
-
 Then, to inspect the R1 Qiagen amplicon file, which contains 572,689 raw amplicon reads, copy and paste **Command 9.3.2**. The command 'zless' simply lets you visually inspect a "gzipped" (compressed) file in the Terminal. This command line tool is often used instead of a word processor because it allows a file to be read line-by-line, which helps with viewing large files.
-
-
 
 **Command 9.3.2:**
 
@@ -214,13 +200,9 @@ Then, to inspect the R1 Qiagen amplicon file, which contains 572,689 raw amplico
 zless ATCC-S5_S21_L001_R1_001.fastq.gz
 ```
 
-
-
 **Reflection:**
 
 Does the structure of each fastq read (*i.e.*, number of lines, content of lines) correspond to what we talked about in class? Can you find the unique identifier portion of each fastq header line? Hint: compare different lines starting with '@M04362' to see how they differ.
-
-
 
 Remember that these data are **paired-end**, meaning that each read in the R1 dataset should have a counterpart in the R2 dataset, derived from the very same amplicon. Let's have a look to see if this is the case.
 
@@ -228,13 +210,9 @@ To do this, we will look at less complex files, presented in a common format cal
 
 From Applications, open the text editor program, TextEdit, and open the files `ATCC-S5_S21_L001_R1_001_500.fasta` and `ATCC-S5_S21_L001_R2_001_500.fasta`. Compare the first FASTA entry in the R1 and R2 files. **These two reads form a read pair**. Each R1 read among the millions or billions in an unprocessed paired-end Illumina sequencing run will have a corresponding R2 read -- this is true of any paired-end library, whether for RNA-seq or whole genome sequencing. This would not be true of single-end sequencing.
 
-
-
 **Reflection:**
 
 Compare the header (*i.e.*, non-sequence) lines for the paired R1 and R2 reads. Are they exactly the same? If not, how are they different? Are the sequences the same? Should they be? (Think of how R1 and R2 reads are related.)
-
-
 
 **Splitting original datasets into individual amplicons**
 
@@ -258,8 +236,6 @@ Use TextEdit to open the file called `QIAseq_common_primers.fasta`, located in t
 
 Notice that most of the primer sequences contain non-standard DNA characters (other than A, C, T, or G) in them. The inclusion of characters like N, R, M, W, B and Y in the primer sequences means that Qiagen has used 'degenerate' primers for each variable region, which means that each variable region 'primer' is a pool of several slightly different primers. The degenerate primer (primer pool) that will be found in V1V2 R1 reads is (degenerate positions bold):
 
-
-
 AG**R**GTTTGAT**YM**TGGCTC
 
 R = purine = A/G
@@ -267,8 +243,6 @@ R = purine = A/G
 Y = pyrimidine = C/T
 
 M = amino = A/C
-
-
 
 A **non-exhaustive** list of primers within this pool includes the below
 primers:
@@ -287,8 +261,6 @@ AG**G**GTTTGAT**TC**TGGCTC ...
 
 How many V1V2 sequences can you find manually in `ATCC-S5_S21_L001_R1_001_500.fasta` in **1 minute**?
 
-
-
 **Reflection:**
 
 Why do you think that Qiagen has used degenerate primers to amplify variable regions? Note that our V6V8 primers are also degenerate (sequences below).
@@ -304,8 +276,6 @@ To use our hypervariable region primer sequences to split our original data file
 The version of CutAdapt that we are using is integrated into the QIIME2 analysis package, which we will be using for most subsequent analyses in this course. To use it, we first must activate our QIIME2 environment in Terminal. **Command 9.3.3** (a series of commands) will have to be executed each time that we need to activate QIIME2.
 
 We will use CutAdapt to generate new R1 and R2 files containing only the V1V2 or ITS1 sequences. For the purposes of this lab, we will not worry about readthrough adapter sequences, though we would want to eliminate them from our real dataset.
-
-
 
 **Command 9.3.3**
 
@@ -332,11 +302,9 @@ computers.
 conda activate biol362
 ```
 
-**Note:** There may be a delay of \~60 s while qiime2 optimizes the environment; then you will have control over the bash shell again.
+**Note:** There may be a delay of ~60 s while qiime2 optimizes the environment; then you will have control over the bash shell again.
 
 To make R1 and R2 files containing reads from only the **V1V2 amplicon**, paste **Command 9.3.4** into Terminal:
-
-
 
 **Command 9.3.4**
 
@@ -346,25 +314,19 @@ cutadapt --action trim --pair-filter both --trimmed-only --pair-adapters -g AGRG
 
 **Reflection:**
 
-What do all these commands actually do? It's important to understand the commands that we are passing on to the computer, as we might want to change the commands in different circumstances. To learn more, open the file 'cutadapt_help_menu' using TextEdit. To generate this help menu, I simply typed 'cutadapt \--help' into the Terminal (try it out!); all command-line bioinformatics software comes with help documentation that can be brought up in similar ways.
+What do all these commands actually do? It's important to understand the commands that we are passing on to the computer, as we might want to change the commands in different circumstances. To learn more, open the file 'cutadapt_help_menu' using TextEdit. To generate this help menu, I simply typed 'cutadapt --help' into the Terminal (try it out!); all command-line bioinformatics software comes with help documentation that can be brought up in similar ways.
 
-What does "\--action trim" do?
+What does "--action trim" do?
 
-What does "\--pair-filter both" do?
+What does "--pair-filter both" do?
 
-What does "\--trimmed-only" do?
+What does "--trimmed-only" do?
 
 What are we doing with "-g" and "-G"?
 
-
-
-Note that the '\>' just before 'v1v2_cutadapt_trim_stats' is a Terminal command (not part of CutAdapt) that directs the output of the command -- in this case, stats on trimming process -- to a new file called 'v1v2_cutadapt_trim_stats'. Open that file with TextEdit to quickly view the statistics of how many v1v2 read pairs were found.
-
-
+Note that the '>' just before 'v1v2_cutadapt_trim_stats' is a Terminal command (not part of CutAdapt) that directs the output of the command -- in this case, stats on trimming process -- to a new file called 'v1v2_cutadapt_trim_stats'. Open that file with TextEdit to quickly view the statistics of how many v1v2 read pairs were found.
 
 Can you use the same approach to make R1 and R2 files containing only the **ITS1 amplicon**?
-
-
 
 Give it a try, using the ITS1 primer sequences (F = CTTGGTCATTTAGAGGAAGTAA; R = GCTGCGTTCTTCATCGATGC) to parse the `noAdapter.R1.fastq.gz` and `noAdapter.R2.fastq.gz` files, as in **Command 9.3.4**.
 
@@ -373,11 +335,7 @@ Remember to give the ITS R1 and R2 files **different** **names** than the other 
 **If you don't give the output files different names than the original,
 Terminal will overwrite the originals!**
 
-
-
 Now we have the R1 and R2 datasets from the V1V2 16S hypervariable region and ITS1 that are free of primer sequences! These files would then be used for import into the data analysis pipeline. We will perform these tasks on your real data prior to next lab.
-
-
 
 **State of the data:**
 
@@ -389,8 +347,6 @@ Now we have the R1 and R2 datasets from the V1V2 16S hypervariable region and IT
   further analysis.
 
 - Note that quality trimming would typically be applied as well.
-  
-  
 
 **What have we learned?**
 

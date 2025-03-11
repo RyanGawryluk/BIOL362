@@ -6,8 +6,6 @@
 
 Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a few computer-based tools that are important in the cleanup, manipulation, and analysis of amplicon sequence data. These computer lab sessions are meant to provide you with some experience in using "command line" software to investigate biological questions using sequence data. We realize that bioinformatics will be new to many of you, and previous experience is not required to complete any exercises.
 
-
-
 You may wish to follow the lab manual from https://github.com/RyanGawryluk/BIOL362
 
 The actual file is called "Lab9-QC_and_intro_to_Terminal.md". Using this will make it easier to copy and paste commands into Terminal. There aren't a lot of commands this week, but it will be more useful once we have more commands to run.
