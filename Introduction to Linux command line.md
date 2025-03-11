@@ -4,7 +4,15 @@
 
 ## Lab 9: Data Quality Control
 
-Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a couple of computer-based tools that are important in the cleanup, manipulation, and analysis of amplicon sequence data. These computer lab sessions are meant to provide you with some experience in using "command line" software to investigate biological questions using sequence data. We realize that bioinformatics will be new to many of you, and previous experience is not required to complete any exercises.
+Welcome to the bioinformatics portion of the lab! Over the next few weeks, we will explore a few computer-based tools that are important in the cleanup, manipulation, and analysis of amplicon sequence data. These computer lab sessions are meant to provide you with some experience in using "command line" software to investigate biological questions using sequence data. We realize that bioinformatics will be new to many of you, and previous experience is not required to complete any exercises.
+
+
+
+You may wish to follow the lab manual from https://github.com/RyanGawryluk/BIOL362
+
+The actual file is called "Lab9-QC_and_intro_to_Terminal.md". Using this will make it easier to copy and paste commands into Terminal. There aren't a lot of commands this week, but it will be more useful once we have more commands to run.
+
+We will have copies of each bioinformatic lab manual in the same format each week.
 
 ## Laboratory 9: Exploring data
 
@@ -14,7 +22,7 @@ This lab is divided into 2 parts with the first being an investigation of sequen
 
 **Note that in this today's lab, we are only introducing the 'command line' and some bioinformatic tools and will not be focusing on sequence data that we generated. This section on basic directory structure and commands may be very familiar to students with previous bioinformatics experience and can be skipped if you feel that it is familiar.**
 
-**We will be exploring a 'toy' dataset, made available by Qiagen, that contains multiple hypervariable regions within one dataset. The only data directly related to our project that we will inspect today are the results of FastQC.**
+**We will be exploring a 'toy' dataset, made available by Qiagen, that contains multiple hypervariable regions within one dataset. No data directly related to our project will be inspected today.**
 
 ## Laboratory Exercise 9.1: Dataset quality metrics
 
@@ -22,7 +30,7 @@ It is valuable to have bioinformatic tools that allow you to inspect numerous se
 
 FastQC outputs basic quality information about fastq read sets, and provides additional information about overrepresented sequences, and retained adapter sequences. FastQC analyses, or those from similar programs, are important not only for microbiome-type analyses, but for virtually any NGS approach, including RNA-seq, whole genome analysis *etc*. The interpretation of the output is somewhat different depending on the type of experiment.
 
-Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forward (R1) and reverse (R2) reads from a sample QiaSeq 16S/ITS dataset, provided by Qiagen. The biological source of the sample data is unknown, but that is irrelevant for our purposes today. Each of the variable regions is represented in these datasets. 
+Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forward (R1) and reverse (R2) reads from last year's BIOL36 dataset, the kombucha microbiome. It's not necessary to understand the distinctions between datasets or experimental setup for this exercise.
 
 ## Detailed instructions
 
