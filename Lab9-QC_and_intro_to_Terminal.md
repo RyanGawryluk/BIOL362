@@ -18,7 +18,7 @@ One of the most exciting parts about working with sequence data is receiving a n
 
 This lab is divided into 2 parts with the first being an investigation of sequence quality metrics. The second part is meant to provide some experience with inspecting and manipulating actual sequence data in fastq and fasta formats. By the end of today, you will have: **a**) assessed the quality of a sample MiSeq amplicon dataset using a computer program, FastQC; **b**) actively engaged in discussion about quality control considerations; and **c**) partitioned a sample QiaSeq 16S/ITS multi-region fastq dataset into individual amplicon datasets.
 
-**Note that in this today's lab, we are only introducing the 'command line' and some bioinformatic tools and will not be focusing on sequence data that we generated. This section on basic directory structure and commands may be very familiar to students with previous bioinformatics experience and can be skipped if you feel that it is familiar.**
+**Note that in this today's lab, we are only introducing the 'command line' and some bioinformatic tools and will not be focusing on sequence data that we generated. This section (Exercise 9.2) on basic directory structure and commands may be very familiar to students with previous bioinformatics or other command line experience .**
 
 **We will be exploring a 'toy' dataset, made available by Qiagen, that contains multiple hypervariable regions within one dataset. No data directly related to our project will be inspected today.**
 
@@ -32,7 +32,7 @@ Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forwa
 
 ## Detailed instructions
 
-Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/labs/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC` where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
+Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC` where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
 
 First, open the 'KombuchaFastQC' folder that is located within the Lab9 folder. In this folder, you will find FastQC reports in html format that we generated simply by loading the Illumina MiSeq paired-end amplicon data (*i.e*., R1 and R2 compressed fastq datasets) generated at Dalhousie's IMR into FastQC. Had we been allowed to install FastQC, you would have opened the files, and the program would have automatically generated these reports; but the overall experience would not be much different. Each file contains quality control metrics for reads from the forward (R1) and reverse (R2) reads.
 
