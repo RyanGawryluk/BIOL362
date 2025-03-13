@@ -187,7 +187,7 @@ Open the 'Terminal' program (ask for help if you need help locating it if needed
 **Command 9.3.1:**
 
 ```bash
-cd /Volumes/labs/BIOL/BIOL362/Students/username/Lab9/QiagenSampleData/
+cd /Volumes/BIOL/BIOL362/Students/username/Lab9/QiagenSampleData/
 ```
 
 NOTE: Remember to change '**username**' to your Netlink ID
