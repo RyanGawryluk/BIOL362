@@ -32,7 +32,7 @@ Here, we will explore how to use FastQC v0.11.9 to evaluate the quality of forwa
 
 ## Detailed instructions
 
-Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC` where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
+Unfortunately, we have not been allowed to install FastQC locally ☹; however, FastQC output files have been supplied in your personal directory. This directory can be found at `/Volumes/labs/BIOL/BIOL362/Students/**username**/Lab9/KombuchaFastQC` where **username is your Netlink ID**. The easiest way to access that directory is to click on a globe-like icon on the Finder bar. Don't worry if you have trouble finding this directory -- it may take a minute for us all to get on the same page!
 
 First, open the 'KombuchaFastQC' folder that is located within the Lab9 folder. In this folder, you will find FastQC reports in html format that we generated simply by loading the Illumina MiSeq paired-end amplicon data (*i.e*., R1 and R2 compressed fastq datasets) generated at Dalhousie's IMR into FastQC. Had we been allowed to install FastQC, you would have opened the files, and the program would have automatically generated these reports; but the overall experience would not be much different. Each file contains quality control metrics for reads from the forward (R1) and reverse (R2) reads.
 
@@ -187,7 +187,7 @@ Open the 'Terminal' program (ask for help if you need help locating it if needed
 **Command 9.3.1:**
 
 ```bash
-cd /Volumes/BIOL/BIOL362/Students/username/Lab9/QiagenSampleData/
+cd /Volumes/labs/BIOL/BIOL362/Students/username/Lab9/QiagenSampleData/
 ```
 
 NOTE: Remember to change '**username**' to your Netlink ID
