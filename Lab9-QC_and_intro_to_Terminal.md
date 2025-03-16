@@ -284,7 +284,7 @@ We will use CutAdapt to generate new R1 and R2 files containing only the V1V2 or
 **2**: Run the command:
 
 ```bash
-conda init
+conda init bash
 ```
 
 **Note**. There may be a lengthy error report and you'll be asked if you
