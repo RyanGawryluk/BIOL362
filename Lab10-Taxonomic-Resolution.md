@@ -42,19 +42,15 @@ conda activate BIOL362
 
 Next, we will import the sequence data into qiime2. There are many ways to do this, depending on the type of sequence data you have (single-end, paired end *etc.*).
 
-We will use a “**manifest**” file, `Kombucha_manifest.txt`, to direct the data import which provides QIIME2 with the absolute file paths to our R1 (forward) and R2 (reverse) data read files.
+We will use a “**manifest**” file, `Artemia_manifest.txt`, to direct the data import which provides QIIME2 with the absolute file paths to our R1 (forward) and R2 (reverse) data read files.
 
 Recall from class that a manifest file is simply a tab-delimited text file that specifies the **absolute path** to each data file in our experiment.
-
-If you’d like to see the manifest file, it can be opened with Excel. Its location is:`/Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/Import/Kombucha_manifest.txt`
 
 **Command 10.2**
 
 ```bash
-qiime tools import --type SampleData[PairedEndSequencesWithQuality] --input-path Import/Kombucha_manifest.txt --output-path Import/V6V8-paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
+qiime tools import --type SampleData[PairedEndSequencesWithQuality] --input-path Import/Artemia_manifest.txt --output-path Import/V6V8-paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
 ```
-
-The data are now present within a qiime2 ‘artifact’. This file holds data, but it is not something that we can visually inspect.
 
 #### **Removing primer sequences from reads**
 
@@ -72,7 +68,7 @@ You will see that we are looking for the appropriate universal primer sequence i
 
 Additionally, we specified that a primer must be found in **both** of the R1 and R2 reads of a pair to be retained -- otherwise they are both deleted (`--p-discard-untrimmed`).  
 
-Lastly, it's also very useful to be aware of default parameters of programs, which are also described in the help menus. For instance, Cutadapt defaults to allowing a single mismatch in the primer sequence. Another important default behaviour of Cutadapt is to delete the specified primer sequences, `--action trim`. We do want to use this setting, so I haven't specified it because it's the default; but I have encountered interesting problems when used other settings!
+Lastly, it's also very useful to be aware of default parameters of programs, which are also described in the help menus. For instance, Cutadapt defaults to allowing a single mismatch in the primer sequence. Another important default behaviour of Cutadapt is to delete the specified primer sequences, `--action trim`. We want to use this setting, but I haven't specified it because it's the default. There is no good theoretical reason for trimming primer sequences, but not doing so leads to DADA2 (Command 10.7) artificially inflating the number of chimeric reads.
 
 #### Generating a visualization of data quality
 
@@ -104,7 +100,7 @@ You can select an area with the mouse to zoom-in, and double click to zoom-out.
 
 Where does data quality drop off? Is this the same for R1 and R2 reads?
 
-Choosing how to trim the reads can be tricky because we have to take a couple of things into account: **1**) we want to avoid low-quality sequence so that we don’t call sequencing errors actual amplicon differences (Amplicon Sequence Variants, or ASVs) and **2**) we shouldn’t trim more than necessary because we need R1 and R2 reads to overlap. The V6V8 amplicon varies in length, but is typically not longer than ~450 bp, so keep that in mind when trimming.
+Choosing how to trim the reads can be tricky because we have to take a couple of things into account: **1**) we want to avoid really low-quality sequence so that we don’t call sequencing errors actual amplicon differences (Amplicon Sequence Variants, or ASVs) and **2**) we shouldn’t trim more than necessary because we need R1 and R2 reads to overlap. The V6V8 amplicon varies in length, but is typically not longer than ~450 bp, so keep that in mind when trimming.
 
 Decide if and/or at which position to cut the R1 and R2 reads at the 3ʹ end. This does not have to be the same position for R1 and R2. In the next command, **you will decide** which trimming parameters to use. (Make sure you keep track of any parameters that you use that are different than in the lab manual - just like in the wet lab!)
 
@@ -132,13 +128,13 @@ It is important to understand that there are several independent operations bein
 2) Merging paired R1 and R2 reads into a single ASV
 3) Detecting likely chimeric ASVs
 
-**Note**: you have to add values for the --p-trunc-len-f and --p-trunc-len-r flags yourself; I have used X and Y as placeholders). Inspect the dada2 help menu to make sure that you understand what those flags do. Having chosen inappropriate values will often be evident in the output of `Command 10.9`; for instance, you might find that you have thrown away a large proportion (>60-70%) of your reads.
+**Note**: you have to add values for the --p-trunc-len-f and --p-trunc-len-r flags yourself; I have used X and Y as placeholders. Inspect the dada2 help menu to make sure that you understand what those flags do. Having chosen inappropriate values will often be evident in the output of `Command 10.9`; for instance, you might find that you have thrown away a large proportion (>60-70%) of your reads.
 
 Also, beware: the “--p-trunc_len” command removes reads shorter than the specified cutoff; if you don’t want to trim at all, set X and Y to “0”.
 
 Denoise, dereplicate, merge reads into ASVs using DADA2. 
 
-This step will take a while.
+**This step will take a while (~22 minutes on my laptop).**
 
 **Command 10.7**
 
@@ -146,7 +142,7 @@ This step will take a while.
 qiime dada2 denoise-paired --i-demultiplexed-seqs Import/V6V8_trimmed.qza --p-trunc-len-f X --p-trunc-len-r Y --verbose --o-representative-sequences DADA2_out/V6V8-rep-seqs-dada2.qza --o-table DADA2_out/V6V8-table-dada2.qza --o-denoising-stats DADA2_out/V6V8-stats-dada2.qza
 ```
 
-Create a visualization of DADA2 stats artifact.
+Create a visualization of the DADA2 stats artifact.
 
 **Command 10.8**
 
@@ -164,9 +160,9 @@ qiime tools view DADA2_out/V6V8-stats-dada2.qzv
 
 We need to view the results of the DADA2 process!
 
-Are we losing a lot of sequences because they are of low-quality?
+Are we losing a lot of sequences because they are of low-quality (filtering)?
 
-Do most R1 and R2 sequences overlap?
+Do most R1 and R2 sequences overlap (merged)?
 
 Are many of the ASVs chimeric?
 
@@ -174,7 +170,7 @@ We can get much more information from the DADA2 output, for instance, the total 
 
 Note that this is the first appearance of the `metadata` file in our code.
 
-- Metadata (`Metadata/V6V8_metadata.txt` ; can be opened in Excel) includes potentially important information about our samples that we recorded that may help us understand the relationship between microbial community composition and Kombucha growth conditions.
+- Metadata (`Metadata/Artemia_metadata.txt` ; can be opened in Excel) includes potentially important information about our samples that we recorded that may help us understand the relationship between microbial community composition and Artemia growth conditions.
 
 - The metadata will feature more prominently next lab, but will also be used below in presenting a taxonomic bar chart.
 
@@ -183,7 +179,7 @@ Make a visualization of the DADA2 table artifact.
 **Command 10.10**
 
 ```bash
-qiime feature-table summarize --i-table DADA2_out/V6V8-table-dada2.qza --m-sample-metadata-file Metadata/Kombucha_metadata.txt --o-visualization DADA2_out/V6V8-table-dada2.qzv
+qiime feature-table summarize --i-table DADA2_out/V6V8-table-dada2.qza --m-sample-metadata-file Metadata/Artemia_metadata.txt --o-visualization DADA2_out/V6V8-table-dada2.qzv
 ```
 
 View the DADA2 output table file.
@@ -206,6 +202,8 @@ Look at the `Feature Detail` tab.
 
 - The long alphanumeric strings are the names of individual features (= ASVs).
 
+- The ASVs are presented from most to least abundant here.
+
 - ‘Frequency’ relates to how often each feature (read pair) is found across the experiment.
 
 - On the right we see the ‘# of Samples Observed In’. This indicates how many samples an ASV was found in (out of 18 samples, including our negative control ... which wasn't really negative!)
@@ -214,7 +212,7 @@ Look at the `Feature Detail` tab.
 
 - This is very important information that many subsequent steps are built upon. We will export this table below as a ‘BIOM’ file that can be opened in Excel.
 
-- Do you think that this number of ASVs (proxy for species/strains) are living in kombucha?
+- Do you think that this number of ASVs (proxy for species/strains) are living in Artemia?
 
 We have not actually seen any of the ASV sequences yet. Do they look how we expect (i.e., like bona fide bacterial V6V8 amplicon sequences)?
 
@@ -238,7 +236,9 @@ The visualization file allows you to download all ASVs as a FASTA file if you ch
 
 Also, each feature/ASV is linked to an NCBI blast submission!
 
-For each of the top five ASV sequences (listed from highest to lowest frequency):
+Note here that the ASV sequences are in a random order (not from most to least abundant).
+
+For each of the five most abundant ASV sequences (can be found in Feature Detail tab of DADA2_out/V6V8-table-dada2.qzv):
 
 - Click on the sequence; then click ‘View Report’ on the NCBI blast page.
 
@@ -250,13 +250,11 @@ For each of the top five ASV sequences (listed from highest to lowest frequency)
 
 #### **Filtering the dataset**
 
-It’s likely that rare and sparsely distributed features/ASVs exist within the dataset. Rare components of the microbiome may represent contaminants, minor variants of true ASVs, or ASVs generated from errors in PCR/sequencing/error-correction.
+It’s likely that rare and sparsely distributed features/ASVs exist within the dataset. Rare components of the microbiome may represent contaminants (e.g., from our NTC or elsewhere), minor variants of true ASVs, or ASVs generated from errors in PCR/sequencing/error-correction.
 
 These features can be removed from feature tables via **contingency filtering**, for instance, requiring that features are observed at least X times in total, in a minimum of Y different samples. This can help speed up later commands and possibly avoid making conclusions about irrelevant, sometimes non-existent taxa, but there is also some risk of losing interesting data.
 
-Sometimes it can also be useful to apply **phylogenetic filters** to remove reads from endosymbiotic organelles, like mitochondria and chloroplasts, who's 'bacterial' 16S rRNA genes can be amplified by universal bacterial primers. Or, if contaminants are identified in our **negative control**, those ASVs can be removed as well.
-
-To begin the process of filtering, we will generate two files below. One is a file (BIOM file) that reports how many times each ASV/feature was found in each sample. This will help us understand the extent of contamination in our negative control. We will also assign taxonomy to each ASV to deduce which phylogenetic groups our contaminants come from.
+To begin thinking about filtering, we will generate two files below. One is a file (BIOM file) that reports how many times each ASV/feature was found in each sample -- a feature table. This will help us understand the extent of contamination in our negative control. We will also assign taxonomy to each ASV to deduce which phylogenetic groups our contaminants come from.
 
 We will create a BIOM feature table file of the dataset.
 
@@ -286,9 +284,9 @@ biom convert -i BIOM/feature-table.biom -o BIOM/feature-table.tsv --to-tsv
 
 Open the BIOM file `BIOM/feature-table.tsv` in Excel. Inspect the feature frequency. 
 
-Which are likely contaminant ASVs? 
+Which are likely contaminant ASVs? Look at the negative control (NDC) column.
 
-Are those ASVs also present in our actual samples?
+Are those ASVs also present in our actual samples? Are they abundant?
 
 #### **Assign taxonomy**
 
@@ -310,7 +308,7 @@ Classify the table.
 qiime feature-classifier classify-sklearn --i-classifier Classify/silva-138-99-nb-classifier.qza --i-reads DADA2_out/V6V8-rep-seqs-dada2.qza --o-classification Classify/V6V8_taxonomy.qza
 ```
 
-Tabulate blast classification of ASVs.
+Tabulate classification of ASVs.
 
 **Command 10.18**
 
@@ -322,7 +320,7 @@ With the next command, we will visualize a table of V6V8 ASV classifications.
 
 The classifications are presented as: Kingdom, Phylum, Class, Order, Family, Genus, Species.
 
-Notice that few taxa can be classified to a species level.
+Notice that many taxa cannot be classified to a species level. That's normal.
 
 View output classification file.
 
@@ -332,23 +330,21 @@ View output classification file.
 qiime tools view Classify/V6V8_taxonomy.qzv
 ```
 
-Now compare your taxonomy visualization and the BIOM file in Excel. Is there a particular taxonomic group that is found commonly in the negative control? If so, what is it?
+Now compare your taxonomy visualization and the BIOM file in Excel. What taxa are found in the negative control? 
 
-Create a new Excel spreadsheet. In the first cell, copy and paste "feature-id" and then copy the ASV IDs (long alphanumeric string) of your candidate contaminants into the spreadsheet, with one ID per row. When complete, save this file as a tab-delimited text file (not a .xlsx file) called `to_exclude.txt` within the `Classify` folder. We will tell qiime to delete the features/ASVs in `to_exclude.txt` in the next command.
+You should see that the NDC contains few taxa, represented by only a few reads and they're often found only in the NDC -- though in at least one case, it appears that our NDC is likely contaminated by abundant bacterial present in most samples (perhaps a minor lab error).
 
-Also, inspect the abundance of ASVs in all of your samples. If you scroll down a bit, you will notice that many ASVs in our samples (besides the negative control) are found in very low frequency, and may only be in a couple of samples. These ASVs are unlikely to be having a large effect on community structure in kombucha. Perhaps we should filter some out, based on their total frequency across datasets and the number of samples that they are found in.
+Also, inspect the abundance of ASVs in all of your samples. If you scroll down a bit, you will notice that many ASVs in our samples (besides the negative control) are found in very low frequency, and may only be in a couple of samples. These ASVs are unlikely to have a large effect on community structure in the Artemia organismal or tank microbiome? Perhaps we should filter some out, based on their total frequency across datasets and the number of samples that they are found in.
 
-As a contingency filter, I have suggested to delete any ASV present in 3 or fewer samples, with a total frequency of less than 100 in the command. But you can choose your own thresholds, too, just be sure to write them down!
+As a contingency filter, I have specified in the command below to delete any ASV present in 2 or fewer samples, with a total frequency of less than 50. This should get rid of NDC contaminants and minor components (that might be erroneous or minor ASVs) But you can choose your own thresholds, too, just be sure to write them down!
 
-Filter, and write a new filtered table artifact.
+**This filtering will write a new filtered table artifact. This updates the sequence dataset so that it no longer contains the filtered sequences; we will use this in downstream analyses.**
 
 **Command 10.20**
 
 ```bash
-qiime feature-table filter-features --i-table DADA2_out/V6V8-table-dada2.qza --m-metadata-file Classify/to_exclude.txt --p-exclude-ids --p-min-samples 3 --p-min-frequency 100 --o-filtered-table DADA2_out/V6V8-table-filtered-dada2.qza
+qiime feature-table filter-features --i-table DADA2_out/V6V8-table-dada2.qza  --p-min-samples 2 --p-min-frequency 50 --o-filtered-table DADA2_out/V6V8-table-filtered-dada2.qza
 ```
-
-Output a new Feature Table (sequence) artifact. This updates the sequence dataset so that it no longer contains the filtered sequences; we will use this in downstream analyses.
 
 **Command 10.21**
 
@@ -363,7 +359,7 @@ If you want to quickly check on what filtering did, generate a visualization of 
 **Command 10.22**
 
 ```bash
-qiime feature-table summarize --i-table DADA2_out/V6V8-table-filtered-dada2.qza --m-sample-metadata-file Metadata/Kombucha_metadata.txt --o-visualization DADA2_out/V6V8-filtered-table-dada2.qzv
+qiime feature-table summarize --i-table DADA2_out/V6V8-table-filtered-dada2.qza --m-sample-metadata-file Metadata/Artemia_metadata.txt --o-visualization DADA2_out/V6V8-filtered-table-dada2.qzv
 ```
 
 And view the visualization.
@@ -376,11 +372,11 @@ qiime tools view DADA2_out/V6V8-filtered-table-dada2.qzv
 
 How many features do we have now?
 
-Look in the feature detail tab: are there any features present less than 100 times and less than 3 samples remaining?
+Look in the feature detail tab: are there any features present less than 50 times and less than 2 samples remaining?
 
-Can you find any of the putative contaminants (*i.e*., feature names) you identified in the negative control? Hopefully not!
+Can you find any of the putative NDC contaminants (*i.e*., feature names) you identified? Hopefully not!
 
-Lastly, we will create a taxonomic bar plot of our filtered Kombucha V6V8 features. 
+Lastly, we will create a taxonomic bar plot of our filtered Artemia V6V8 features. 
 
 Keep in mind that this chart shows the **relative abundance** of different taxonomic groups (at different taxonomic levels) for our samples. We are simply seeing the proportion of reads from each sample that a given feature makes up.
 
@@ -389,7 +385,7 @@ Create a taxonomic bar plot visualization of V6V8 ASVs based on filtered classif
 **Command 10.24**
 
 ```bash
-qiime taxa barplot --i-table DADA2_out/V6V8-table-filtered-dada2.qza --i-taxonomy Classify/V6V8_taxonomy.qza --m-metadata-file Metadata/Kombucha_metadata.txt --o-visualization Classify/V6V8_filtered_taxon_barplot.qzv
+qiime taxa barplot --i-table DADA2_out/V6V8-table-filtered-dada2.qza --i-taxonomy Classify/V6V8_taxonomy.qza --m-metadata-file Metadata/Artemia_metadata.txt --o-visualization Classify/V6V8_filtered_taxon_barplot.qzv
 ```
 
 View the interactive bar chart visualization
@@ -412,11 +408,11 @@ You can choose between several different colour palettes.
 
 **Sort Samples By**
 
-The default setting often does not make a lot of sense.
+**The default setting often does not make a lot of sense.**
 
-You can organize bars by sample name, *e.g.*, 'Sample Long'
+You can organize bars by sample name, *e.g.*, 'Full Type', which corresponds to, e.g., SeaMonkeys_Hot_Organism (SHO).
 
-You can organize the bars according to different metadata categories, such as the delta pH, or the SCOBY weight.
+You can organize the bars according to different metadata categories, such as the organismal sex, brand (SeaMonkey vs HydroPet), or growth temperature.
 
 **Other**
 
