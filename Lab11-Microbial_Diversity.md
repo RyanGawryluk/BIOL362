@@ -333,64 +333,8 @@ qiime diversity beta-group-significance --i-distance-matrix Diversity/V6V8-core-
 qiime tools view Diversity/V6V8-core-metrics-results/weighted_unifrac_status-significance.qzv 
 ```
 
-#### Differential Abundance
-
-In trying to understand the underlying factors shaping different microbiomes, an important aspect to investigate is whether there are any individual taxa that are differentially abundant in different sample types.
-
-Increased or reduced abundance of a taxon in different samples could be correlated with, or even causal to, a phenotype of interest.
-
-Qiime2 offers some programs that can test for differentially abundant taxa, including ANCOM, which is included within the Composition plugin.
-
-**Command 11.22**
-
-Create a new folder called ‘DiffAbundance’ in the ‘Data’ directory.
-
-```bash
-mkdir DiffAbundance
-```
-
-- ANCOM reads feature abundances from the feature table (i.e., the filtered feature table file generated in the previous lab).
-
-- ANCOM cannot deal with zero counts in the feature table, so before we proceed with the analysis, we need to add ```pseudocounts``` – a common value – to each feature count in the table, using the below command.
-
-**Command 11.23**
-
-```bash
-qiime composition add-pseudocount --i-table DADA2_out/V6V8-table-filtered-dada2.qza --o-composition-table DiffAbundance/comp-V6V8-table-filtered-dada2.qza
-```
-
-Next, we can run ANCOM on our filtered feature table.
-
-- We are explicitly testing whether or not there are differentially abundant features according to the metadata column ‘Full_type’, though we could theoretically test any categorical metadata variable here.
-
-**Command 11.18**
-
-Execute the below command.
-
-```bash
-qiime composition ancom --i-table DiffAbundance/comp-V6V8-table-filtered-dada2.qza --m-metadata-file Metadata/Artemia_metadata.txt --m-metadata-column Full_type --o-visualization DiffAbundance/filtered-ancom-Carbon_source.qzv
-```
-
-You will see a chart called a ```Volcano Plot``` at the top of the output.
-
-- The actual interpretation of this test is complex and unintuitive, but ANCOM is basically executing many pairwise tests of log ratio abundances of different features in different samples.
-
-- The x-axis is summarizing the effect size difference of the given species between your treatment groups (clr; centred log ratio), and the y-axis is the strength of the ANCOM test statistic (W).
-
-- **Consistently differentially abundant taxa should appear in the top right of the Volcano plot**.
-  
-  - If you scroll down the page, you can see percentile-based counts for various features in the different family categories.
-  
-  - Do you see any differentially abundant taxa? If so, open BIOM/feature-table.tsv with Excel and have a look for the feature name(s) and the abundance of that feature among samples. Do the ANCOM results seem to make sense?
-  
-  - If you have differentially abundant taxa, view your representative sequence visualization. Can you find the differentially abundant taxon there? Can you use BLAST to roughly determine its taxonomic affiliation?
-  
-  - Is the differentially abundant feature/ASV abundant? Would you guess that it is a dominant and important microbe that would contribute significantly to microbiome structure and function? Or a more minor contributor?
-
-**State of the data**
+#### **State of the data**
 
 - We have visualized and tested whether the alpha diversity (feature evenness/richness) in each sample type is different than in other types.
 
 - We have visualized and tested whether different sample types are different from each other in terms of evenness/richness and, in one case, phylogenetic distance. The tests performed here provide the information required to answer our questions about how temperature affects Artemia microbial communities.
-
-- We have searched for any taxa that are differentially abundant across samples.
