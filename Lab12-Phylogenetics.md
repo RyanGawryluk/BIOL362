@@ -246,7 +246,7 @@ Run FigTree.jar by clicking on it.
 
 - To root the tree, expand the `Trees` tab on the left, and click the `Root tree` option. 
 
-- Select the branch leading to the *Artemia salina* clade, and root the tree there.
+- Select the branch leading to the four outgroup species from the genera *Streptocephalus*, *Phallocryptus* and *Branchinella*, and root the tree there. These are known close relatives of *Artemia*.
 
 - Select `Order Nodes` within `Trees` and choose increasing or decreasing; whatever looks better to you.
 

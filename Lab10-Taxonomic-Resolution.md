@@ -18,8 +18,6 @@ cd /Volumes/labs/BIOL/BIOL362/Students/NetlinkID/Data/
 
 **Remember***: qiime2 must be activated each time that we use it, using the following command:
 
-
-
 **Command 10.1**
 
 First, activate qiime
@@ -105,8 +103,6 @@ Where does data quality drop off? Is this the same for R1 and R2 reads?
 Choosing how to trim the reads can be tricky because we have to take a couple of things into account: **1**) we want to avoid really low-quality sequence so that we don’t call sequencing errors actual amplicon differences (Amplicon Sequence Variants, or ASVs) and **2**) we shouldn’t trim more than necessary because we need R1 and R2 reads to overlap. The V6V8 amplicon varies in length, but is typically not longer than ~450 bp, so keep that in mind when trimming.
 
 Decide if and/or at which position to cut the R1 and R2 reads at the 3ʹ end. This does not have to be the same position for R1 and R2. In the next command, **you will decide** which trimming parameters to use. (Make sure you keep track of any parameters that you use that are different than in the lab manual - just like in the wet lab!)
-
-
 
 #### **Amplicon sequence variant (ASV) resolution**
 
